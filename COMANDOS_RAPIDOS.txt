@@ -1,0 +1,28 @@
+SANATORIO MÉDICO STACK 3 - COMANDOS RÁPIDOS
+
+1) Desde la raíz:
+   docker compose up -d
+
+2) Backend:
+   cd backend
+   composer install
+   php artisan optimize:clear
+   php artisan route:list --path=api
+   php artisan serve
+
+3) Frontend (otra terminal):
+   cd frontend
+   npm install
+   npm run dev
+
+4) URLs:
+   API Ping: http://127.0.0.1:8000/api/ping
+   API Sucursales: http://127.0.0.1:8000/api/sucursales
+   Frontend: http://localhost:5173
+
+5) MongoDB Compass:
+   mongodb://admin:Desarrolloweb_2026*@localhost:27017/?authSource=admin
+
+Alternativa:
+   PowerShell -> .\scripts\setup.ps1
+   PowerShell -> .\scripts\start.ps1

@@ -1,0 +1,152 @@
+{
+  "info": {
+    "_postman_id": "5fb6436f-85dd-4c9c-9b17-sanatoriostack3",
+    "name": "Sanatorio Médico Stack 3 - Sucursales",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://127.0.0.1:8000/api"
+    },
+    {
+      "key": "sucursalId",
+      "value": ""
+    }
+  ],
+  "item": [
+    {
+      "name": "1. Ping MongoDB",
+      "request": {
+        "method": "GET",
+        "url": {
+          "raw": "{{baseUrl}}/ping",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "ping"
+          ]
+        }
+      }
+    },
+    {
+      "name": "2. Listar sucursales",
+      "request": {
+        "method": "GET",
+        "url": {
+          "raw": "{{baseUrl}}/sucursales",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "sucursales"
+          ]
+        }
+      }
+    },
+    {
+      "name": "3. Crear sucursal",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "const json = pm.response.json();",
+              "if (json.datos && json.datos._id) { pm.collectionVariables.set('sucursalId', json.datos._id); }"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"nombre\": \"Sucursal Central\",\n  \"direccion\": \"Zona 10, Ciudad de Guatemala\",\n  \"telefono\": \"2222-1000\",\n  \"correo\": \"central@sanatorio.gt\",\n  \"ciudad\": \"Guatemala\",\n  \"departamento\": \"Guatemala\",\n  \"fecha_apertura\": \"2026-10-04\",\n  \"tipo_sucursal\": \"Principal\",\n  \"estado\": true\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/sucursales",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "sucursales"
+          ]
+        }
+      }
+    },
+    {
+      "name": "4. Buscar sucursal",
+      "request": {
+        "method": "GET",
+        "url": {
+          "raw": "{{baseUrl}}/sucursales/{{sucursalId}}",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "sucursales",
+            "{{sucursalId}}"
+          ]
+        }
+      }
+    },
+    {
+      "name": "5. Editar sucursal",
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"nombre\": \"Sucursal Central Actualizada\",\n  \"direccion\": \"Zona 10, Ciudad de Guatemala\",\n  \"telefono\": \"2222-1111\",\n  \"correo\": \"central@sanatorio.gt\",\n  \"ciudad\": \"Guatemala\",\n  \"departamento\": \"Guatemala\",\n  \"fecha_apertura\": \"2026-10-04\",\n  \"tipo_sucursal\": \"Principal\",\n  \"estado\": true\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/sucursales/{{sucursalId}}",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "sucursales",
+            "{{sucursalId}}"
+          ]
+        }
+      }
+    },
+    {
+      "name": "6. Eliminar sucursal",
+      "request": {
+        "method": "DELETE",
+        "url": {
+          "raw": "{{baseUrl}}/sucursales/{{sucursalId}}",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "sucursales",
+            "{{sucursalId}}"
+          ]
+        }
+      }
+    }
+  ]
+}
