@@ -1,0 +1,290 @@
+* {
+  box-sizing: border-box;
+}
+
+:root {
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
+    "Segoe UI", sans-serif;
+  color: #18323a;
+  background: #f4f7f8;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  min-height: 100vh;
+  background:
+    radial-gradient(circle at top right, rgba(0, 140, 149, 0.09), transparent 32rem),
+    #f4f7f8;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+}
+
+button {
+  border: 0;
+  border-radius: 9px;
+  padding: 10px 16px;
+  cursor: pointer;
+  background: #008c95;
+  color: white;
+  font-weight: 700;
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+
+button:hover:not(:disabled) {
+  transform: translateY(-1px);
+}
+
+button:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+}
+
+button.secondary {
+  background: #64777c;
+}
+
+button.edit {
+  background: #287a80;
+}
+
+button.danger {
+  background: #b84747;
+}
+
+.page {
+  width: min(1180px, calc(100% - 40px));
+  margin: 0 auto;
+  padding: 42px 0;
+}
+
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: end;
+  gap: 24px;
+  margin-bottom: 24px;
+}
+
+.page-header p {
+  margin-bottom: 0;
+  color: #5c7277;
+}
+
+.eyebrow {
+  margin: 0 0 6px !important;
+  font-weight: 800;
+  color: #008c95 !important;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-size: 0.78rem;
+}
+
+h1,
+h2 {
+  color: #173f45;
+}
+
+h1 {
+  margin: 0 0 8px;
+  font-size: clamp(2rem, 5vw, 3rem);
+}
+
+h2 {
+  margin: 0;
+}
+
+.table-container {
+  overflow-x: auto;
+  background: #ffffff;
+  border: 1px solid #dce7e9;
+  border-radius: 14px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th,
+td {
+  padding: 14px 16px;
+  text-align: left;
+  border-bottom: 1px solid #e8eef0;
+  vertical-align: middle;
+}
+
+th {
+  background: #eaf7f7;
+  color: #12646a;
+  white-space: nowrap;
+}
+
+tbody tr:hover {
+  background: #fbfdfd;
+}
+
+td small {
+  display: block;
+  margin-top: 3px;
+  color: #71858a;
+}
+
+.actions {
+  display: flex;
+  gap: 8px;
+  white-space: nowrap;
+}
+
+.form-card {
+  background: white;
+  border: 1px solid #dce7e9;
+  border-radius: 14px;
+  padding: 22px;
+  margin-bottom: 24px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.04);
+}
+
+.form-title-row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 18px;
+}
+
+.form-grid {
+  border: 0;
+  padding: 0;
+  margin: 0;
+  min-width: 0;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.search-box {
+  display: grid;
+  gap: 8px;
+  margin-bottom: 18px;
+  font-weight: 700;
+}
+
+.form-grid label {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-weight: 700;
+  color: #274b51;
+}
+
+.form-grid .full {
+  grid-column: 1 / -1;
+}
+
+input,
+select,
+textarea {
+  width: 100%;
+  border: 1px solid #cbdadd;
+  border-radius: 8px;
+  padding: 10px 12px;
+  background: white;
+  color: #18323a;
+  outline: none;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+  border-color: #008c95;
+  box-shadow: 0 0 0 3px rgba(0, 140, 149, 0.11);
+}
+
+textarea {
+  min-height: 90px;
+  resize: vertical;
+}
+
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 18px;
+}
+
+.success,
+.error,
+.empty-state {
+  padding: 14px 16px;
+  border-radius: 10px;
+  margin: 0 0 18px;
+}
+
+.success {
+  background: #e9f7ef;
+  border: 1px solid #cbe9d5;
+  color: #23633c;
+}
+
+.error {
+  background: #fff1f1;
+  border: 1px solid #f0cccc;
+  color: #8a2d2d;
+}
+
+.empty-state {
+  background: #ffffff;
+  border: 1px dashed #bfd0d3;
+  color: #60777c;
+  text-align: center;
+}
+
+.status {
+  display: inline-flex;
+  align-items: center;
+  border-radius: 999px;
+  padding: 5px 10px;
+  font-size: 0.82rem;
+  font-weight: 800;
+}
+
+.status.active {
+  background: #e9f7ef;
+  color: #23633c;
+}
+
+.status.inactive {
+  background: #f2f2f2;
+  color: #666;
+}
+
+@media (max-width: 760px) {
+  .page {
+    width: min(100% - 24px, 1180px);
+    padding: 24px 0;
+  }
+
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .form-grid .full {
+    grid-column: auto;
+  }
+
+  .page-header {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .actions {
+    flex-direction: column;
+  }
+}

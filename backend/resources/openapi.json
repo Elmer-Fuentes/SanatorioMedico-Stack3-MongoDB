@@ -1,0 +1,592 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Sanatorio Médico API",
+    "version": "1.0.0",
+    "description": "API de conexión y gestión de sucursales. Las operaciones de escritura modifican los datos de la base configurada."
+  },
+  "servers": [
+    {
+      "url": "/api"
+    }
+  ],
+  "tags": [
+    {
+      "name": "Estado"
+    },
+    {
+      "name": "Sucursales"
+    }
+  ],
+  "paths": {
+    "/ping": {
+      "get": {
+        "tags": [
+          "Estado"
+        ],
+        "operationId": "ping",
+        "summary": "Comprobar la conexión con MongoDB",
+        "responses": {
+          "200": {
+            "description": "Conexión correcta",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "ok": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "mensaje": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "No fue posible conectar con MongoDB",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "ok": {
+                      "type": "boolean",
+                      "example": false
+                    },
+                    "mensaje": {
+                      "type": "string"
+                    },
+                    "error": {
+                      "type": "string",
+                      "nullable": true
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/sucursales": {
+      "get": {
+        "tags": [
+          "Sucursales"
+        ],
+        "operationId": "listarSucursales",
+        "summary": "Listar sucursales ordenadas por nombre",
+        "responses": {
+          "200": {
+            "description": "Lista de sucursales",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "ok",
+                    "mensaje",
+                    "datos"
+                  ],
+                  "properties": {
+                    "ok": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "mensaje": {
+                      "type": "string"
+                    },
+                    "datos": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Sucursal"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Campos inválidos o faltantes",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationError"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error interno controlado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "buscar",
+            "in": "query",
+            "required": false,
+            "description": "Búsqueda parcial sin distinguir mayúsculas por nombre, ciudad, departamento, teléfono, correo o tipo.",
+            "schema": {
+              "type": "string",
+              "maxLength": 150
+            }
+          }
+        ]
+      },
+      "post": {
+        "tags": [
+          "Sucursales"
+        ],
+        "operationId": "crearSucursal",
+        "summary": "Crear una sucursal",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SucursalInput"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Sucursal creada",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "ok",
+                    "mensaje",
+                    "datos"
+                  ],
+                  "properties": {
+                    "ok": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "mensaje": {
+                      "type": "string"
+                    },
+                    "datos": {
+                      "$ref": "#/components/schemas/Sucursal"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Campos inválidos o faltantes",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationError"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error interno controlado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/sucursales/{id}": {
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true,
+          "description": "Identificador MongoDB de la sucursal",
+          "schema": {
+            "type": "string",
+            "pattern": "^[a-fA-F0-9]{24}$"
+          },
+          "example": "507f1f77bcf86cd799439011"
+        }
+      ],
+      "get": {
+        "tags": [
+          "Sucursales"
+        ],
+        "operationId": "obtenerSucursal",
+        "summary": "Obtener una sucursal",
+        "responses": {
+          "200": {
+            "description": "Sucursal encontrada",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "ok",
+                    "mensaje",
+                    "datos"
+                  ],
+                  "properties": {
+                    "ok": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "mensaje": {
+                      "type": "string"
+                    },
+                    "datos": {
+                      "$ref": "#/components/schemas/Sucursal"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Sucursal inexistente o identificador inválido",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error interno controlado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Sucursales"
+        ],
+        "operationId": "actualizarSucursal",
+        "summary": "Actualizar una sucursal",
+        "description": "Se requieren todos los campos, igual que al crear una sucursal.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SucursalInput"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Sucursal actualizada",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "ok",
+                    "mensaje",
+                    "datos"
+                  ],
+                  "properties": {
+                    "ok": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "mensaje": {
+                      "type": "string"
+                    },
+                    "datos": {
+                      "$ref": "#/components/schemas/Sucursal"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Sucursal inexistente o identificador inválido",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Campos inválidos o faltantes",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationError"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error interno controlado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Sucursales"
+        ],
+        "operationId": "eliminarSucursal",
+        "summary": "Eliminar una sucursal",
+        "responses": {
+          "200": {
+            "description": "Sucursal eliminada",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "ok",
+                    "mensaje",
+                    "datos"
+                  ],
+                  "properties": {
+                    "ok": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "mensaje": {
+                      "type": "string"
+                    },
+                    "datos": {
+                      "type": "object",
+                      "nullable": true,
+                      "example": null
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Sucursal inexistente o identificador inválido",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error interno controlado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "SucursalInput": {
+        "type": "object",
+        "required": [
+          "nombre",
+          "direccion",
+          "telefono",
+          "correo",
+          "ciudad",
+          "departamento",
+          "fecha_apertura",
+          "tipo_sucursal",
+          "estado"
+        ],
+        "properties": {
+          "nombre": {
+            "type": "string",
+            "maxLength": 150,
+            "example": "Sucursal Central"
+          },
+          "direccion": {
+            "type": "string",
+            "maxLength": 250,
+            "example": "Zona 1, Ciudad de Guatemala"
+          },
+          "telefono": {
+            "type": "string",
+            "maxLength": 20,
+            "example": "2222-3333"
+          },
+          "correo": {
+            "type": "string",
+            "format": "email",
+            "maxLength": 150,
+            "example": "central@example.com"
+          },
+          "ciudad": {
+            "type": "string",
+            "maxLength": 100,
+            "example": "Guatemala"
+          },
+          "departamento": {
+            "type": "string",
+            "maxLength": 100,
+            "example": "Guatemala"
+          },
+          "fecha_apertura": {
+            "type": "string",
+            "format": "date",
+            "example": "2026-01-15"
+          },
+          "tipo_sucursal": {
+            "type": "string",
+            "maxLength": 50,
+            "example": "Central"
+          },
+          "estado": {
+            "type": "boolean",
+            "example": true
+          }
+        }
+      },
+      "Sucursal": {
+        "type": "object",
+        "properties": {
+          "nombre": {
+            "type": "string",
+            "maxLength": 150,
+            "example": "Sucursal Central"
+          },
+          "direccion": {
+            "type": "string",
+            "maxLength": 250,
+            "example": "Zona 1, Ciudad de Guatemala"
+          },
+          "telefono": {
+            "type": "string",
+            "maxLength": 20,
+            "example": "2222-3333"
+          },
+          "correo": {
+            "type": "string",
+            "format": "email",
+            "maxLength": 150,
+            "example": "central@example.com"
+          },
+          "ciudad": {
+            "type": "string",
+            "maxLength": 100,
+            "example": "Guatemala"
+          },
+          "departamento": {
+            "type": "string",
+            "maxLength": 100,
+            "example": "Guatemala"
+          },
+          "fecha_apertura": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2026-01-15T00:00:00.000000Z"
+          },
+          "tipo_sucursal": {
+            "type": "string",
+            "maxLength": 50,
+            "example": "Central"
+          },
+          "estado": {
+            "type": "boolean",
+            "example": true
+          },
+          "id": {
+            "type": "string",
+            "readOnly": true,
+            "example": "507f1f77bcf86cd799439011"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "readOnly": true
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date-time",
+            "readOnly": true
+          }
+        }
+      },
+      "Error": {
+        "type": "object",
+        "properties": {
+          "ok": {
+            "type": "boolean",
+            "example": false
+          },
+          "mensaje": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "ok",
+          "mensaje"
+        ]
+      },
+      "ValidationError": {
+        "type": "object",
+        "properties": {
+          "errors": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          "ok": {
+            "type": "boolean",
+            "example": false
+          },
+          "mensaje": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "ok",
+          "mensaje"
+        ]
+      }
+    }
+  }
+}
